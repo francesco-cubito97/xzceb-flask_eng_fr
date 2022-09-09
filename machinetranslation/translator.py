@@ -11,16 +11,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-apikey = os.environ['apikey']
-url = os.environ['url']
+apikey = os.environ["apikey"]
+url = os.environ["url"]
 
-authenticator = IAMAuthenticator('{apikey}')
+authenticator = IAMAuthenticator(f"{apikey}")
 language_translator = LanguageTranslatorV3(
-    version='{version}',
+    version="1.0",
     authenticator=authenticator
 )
 
-language_translator.set_service_url('{url}')
+language_translator.set_service_url(f"{url}")
 
 def english_to_french(englishText):
     """
@@ -28,12 +28,14 @@ def english_to_french(englishText):
     """
     frenchText = language_translator.translate(englishText, "en-fr").get_result()
     
-    return frenchText
+    return json.dumps(frenchText)["translations"][0]["translation"]
 
 def french_to_english(frenchText):
     """
-    Translate english text to french text
+    Translate french text to english text
     """
     englishText = language_translator.translate(englishText, "fr-en").get_result()
     
-    return englishText
+    return json.dumps(englishText)["translations"][0]["translation"]
+
+print(english_to_french("Hello to everyone"))
