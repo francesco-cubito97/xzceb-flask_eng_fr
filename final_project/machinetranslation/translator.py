@@ -3,10 +3,10 @@ This is the module that implements the translation functions from english to fre
 and viceversa
 """
 
-import json
+import os
+#import json
 from ibm_watson import LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,22 +22,16 @@ language_translator = LanguageTranslatorV3(
 
 language_translator.set_service_url(f"{url}")
 
-def english_to_french(englishText):
+def english_to_french(english_text):
     """
     Translate english text to french text
     """
-    frenchText = language_translator.translate(text=englishText, 
-                                               model_id="en-fr").get_result()
-    
-    return frenchText["translations"][0]["translation"]
+    french_text = language_translator.translate(text=english_text, model_id="en-fr").get_result()
+    return french_text["translations"][0]["translation"]
 
-def french_to_english(frenchText):
+def french_to_english(french_text):
     """
     Translate french text to english text
     """
-    englishText = language_translator.translate(text=frenchText, 
-                                                model_id="fr-en").get_result()
-    
-    return englishText["translations"][0]["translation"]
-
-print(english_to_french("Hello to everyone"))
+    english_text = language_translator.translate(text=french_text, model_id="fr-en").get_result()
+    return english_text["translations"][0]["translation"]
